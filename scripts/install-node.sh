@@ -11,7 +11,7 @@ add-apt-repository \
    "deb https://download.docker.com/linux/$(. /etc/os-release; echo "$ID") \
    $(lsb_release -cs) \
    stable"
-apt-get update && apt-get install -y docker-ce=$(apt-cache madison docker-ce | grep 17.03 | head -1 | awk '{print $3}')
+apt-get update && apt-get install -y docker-ce=$(apt-cache madison docker-ce | grep 18.06 | head -1 | awk '{print $3}')
 
 echo "installing kubeadm and kubectl"
 apt-get update && apt-get install -y apt-transport-https
@@ -21,3 +21,6 @@ deb http://apt.kubernetes.io/ kubernetes-xenial main
 EOF
 apt-get update
 apt-get install -y kubelet kubeadm kubectl
+
+#After the script you've to join the kubernates master node using the command:
+kubeadm join ${kubemaster_ip}:6443 --token ${kubemaster_token} --discovery-token-ca-cert-hash sha256:${kubemaster_token_ca_cert}
